@@ -41,7 +41,7 @@ Two changes relative to upstream 1.0.12 (commit `9951d25`); see `patches/` for t
 
 | # | Change | Why |
 |---|---|---|
-| 1 | The seven `@deepseek-ai/dsh-*` peers go from the exact pin `0.2.0-rc.2` to `>=0.2.0-rc.2 <0.3.0-0` | dsh compares every `@deepseek-ai/dsh*` peer against the running runtime before loading a plugin. An exact pin fails wholesale on 0.2.1-rc.2, so the plugin is rejected with "requires host 0.2.0-rc.2, currently running 0.2.1-rc.2" |
+| 1 | The seven `@deepseek-ai/dsh-*` peers go from the exact pin `0.2.0-rc.2` to `>=0.2.0-rc.2 <0.2.1 \|\| >=0.2.1-0 <0.3.0-0` | dsh compares every `@deepseek-ai/dsh*` peer against the running runtime before loading a plugin. An exact pin fails wholesale on 0.2.1-rc.2, so the plugin is rejected with "requires host 0.2.0-rc.2, currently running 0.2.1-rc.2". A single `>=0.2.0-rc.2 <0.3.0-0` segment is not enough either: under plain semver it excludes prereleases like `0.2.1-rc.2`, which surfaces as `ERESOLVE` at install time |
 | 2 | `DeepSeek Harness` is rewritten to `DeepSeek-Harness` in the chat request body | the upstream service validates the client name, and the host's default name (with a space) is treated as an unknown client |
 
 No host downgrade and no `compatibility.json` exemption needed — the range covers 0.2.1 by itself. The `<0.3.0-0` upper bound is deliberate: 0.3 may change the plugin API, and this package will not pretend otherwise.

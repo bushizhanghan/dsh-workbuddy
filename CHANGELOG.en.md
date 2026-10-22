@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.2.1] - 2026-10-22
+
+### Fixed
+
+- **The peer range silently excluded 0.2.1 prereleases** under standard semver rules: in `>=0.2.0-rc.2 <0.3.0-0` the prerelease tag sits only on the `0.2.0` tuple, so a version like `0.2.1-rc.2` was excluded — only the host's own check, which passes `includePrerelease`, let it through. The range is now `>=0.2.0-rc.2 <0.2.1 || >=0.2.1-0 <0.3.0-0`, which matches `0.2.0-rc.2`, `0.2.0`, `0.2.1-rc.2` and `0.2.1`, so `pnpm add` no longer reports `ERESOLVE`.
+
 ## [1.2.0] - 2026-10-22
 
 ### Changed
