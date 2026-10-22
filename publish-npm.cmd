@@ -31,10 +31,12 @@ echo 先打开验证器 App，再输入下面这 6 位数（30 秒内有效）�
 echo --------------------------------------------
 set "OTP="
 set /p OTP=验证码（留空则不带 OTP 直接试）: 
+set "OTPARG="
+if defined OTP set "OTPARG=--otp=%OTP%"
 
 echo.
 echo 正在发布（--ignore-scripts：lib/ 已构建好，跳过 prepack 重建）
-call npm publish --access public --ignore-scripts --otp=%OTP%
+call npm publish --access public --ignore-scripts %OTPARG%
 if errorlevel 1 goto fail
 
 echo.
@@ -52,6 +54,8 @@ echo.
 echo ============================================
 echo  失败：把上面的红字整段复制出来
 echo  E403 + Two-factor = 验证码过期，重新双击本脚本再试一次
+echo  如果验证器里根本没有 npm 这一项（只注册过安全密钥），
+echo  改用 npmjs.com 上带 Bypass 2FA 的 Granular Token 发布
 echo ============================================
 pause
 exit /b 1
