@@ -16,7 +16,7 @@
  * successful sweep means "the upstream accepted these spellings", not "these
  * spellings change how the model thinks".
  *
- * @module dsh-workbuddy/probe
+ * @module dsh-workmate/probe
  */
 
 import { randomBytes } from 'node:crypto'

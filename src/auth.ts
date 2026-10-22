@@ -18,7 +18,7 @@
  * actually selects the upstream host, so a mis-pointed file degrades into a
  * region mismatch rather than silent cross-region traffic.
  *
- * @module dsh-workbuddy/auth
+ * @module dsh-workmate/auth
  */
 
 import { createHash } from 'node:crypto'
@@ -409,7 +409,7 @@ export class WorkBuddyCredentialStore implements WorkBuddyCredentialStoreLike {
       const desktop = candidates.length > 0 ? candidates.join(' or ') : '(no desktop path on this platform)'
       throw new Error(
         'workbuddy-ai: no signed-in WorkBuddy (international) account found;'
-        + ' connect from the plugin card, run `dsh-workbuddy login`,'
+        + ' connect from the plugin card, run `dsh-workmate login`,'
         + ` or sign in once in the WorkBuddy international desktop app (expected ${desktop}`
         + ` or ${WORKBUDDY_AUTH_FILE_ENV})`,
       )

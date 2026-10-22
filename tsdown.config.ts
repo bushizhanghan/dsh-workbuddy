@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import type { UserConfig } from 'tsdown'
 
-const PLUGIN_ID = 'dsh-workbuddy'
+const PLUGIN_ID = '@bushizhanghan/dsh-workmate'
 
 /** Read the npm version once so the build injects it into src/version.ts. */
 const PACKAGE_VERSION = JSON.parse(

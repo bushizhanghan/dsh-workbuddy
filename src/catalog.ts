@@ -15,7 +15,7 @@
  * local price table and let it override the catalog; that table is gone, and
  * with it the risk of quoting yesterday's prices.
  *
- * @module dsh-workbuddy/catalog
+ * @module dsh-workmate/catalog
  */
 
 import type { WorkBuddyUpstreamModel } from './upstream.ts'

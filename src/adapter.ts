@@ -8,7 +8,7 @@
  * the domestic and the international app needs both routes addressable at once,
  * and distinct ids is what makes that possible.
  *
- * @module dsh-workbuddy/adapter
+ * @module dsh-workmate/adapter
  */
 
 import { createProvider } from '@earendil-works/pi-ai'
@@ -263,7 +263,7 @@ export function createWorkBuddyAdapter(options: WorkBuddyAdapterOptions): WorkBu
     provider: providerId,
     displayName: providerName,
     streamIdleTimeoutMs: WORKBUDDY_STREAM_IDLE_TIMEOUT_MS,
-    retryPolicy: resolveRetryPolicy(undefined, 'dsh-workbuddy retryPolicy'),
+    retryPolicy: resolveRetryPolicy(undefined, 'dsh-workmate retryPolicy'),
     configuredMaxTokens: new Map(),
     maxRequestImageBytes: MAX_REQUEST_IMAGE_BYTES,
     piProvider: provider,
@@ -283,7 +283,7 @@ export function createWorkBuddyAdapter(options: WorkBuddyAdapterOptions): WorkBu
         async read() { return undefined },
         async list() { return [] },
         async modify() {
-          throw new Error('dsh-workbuddy: the workbuddy-ai route has no pi-ai credential lifecycle')
+          throw new Error('dsh-workmate: the workbuddy-ai route has no pi-ai credential lifecycle')
         },
         async delete() {},
       },

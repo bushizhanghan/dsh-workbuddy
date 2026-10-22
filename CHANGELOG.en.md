@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-10-22
+
+### Changed
+
+- **Renamed to `@bushizhanghan/dsh-workmate`** so the npm package cannot be confused with upstream `dsh-workbuddy`. The module id (`__ModuleLoader__.load({ id })` takes the package name), the `name` inserted by `cordis.patch.yml`, the CLI command (`dsh-workmate`) and the docs were updated together.
+- The model provider id stays `workbuddy-ai`; existing configs need no change.
+
 ## [1.1.0] - 2026-10-22
 
 First release of the compatibility fork, based on upstream `dsh-workbuddy@1.0.12` (commit `9951d25`). Entries below are upstream's and are kept verbatim.

@@ -7,7 +7,7 @@
 # Switch to `modelScope: all` in Settings → Plugins to list paid models too.
 - insert:
     - id: llm-workbuddy
-      name: dsh-workbuddy
+      name: "@bushizhanghan/dsh-workmate"
       config:
         probeConsent: false
         modelScope: free

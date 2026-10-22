@@ -13,7 +13,7 @@
  * is untrusted input, and a hand-edited one must not be able to inject a value
  * the schema would have rejected.
  *
- * @module dsh-workbuddy/settings-file
+ * @module dsh-workmate/settings-file
  */
 
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'

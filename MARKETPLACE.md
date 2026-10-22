@@ -13,7 +13,7 @@ npm publish --access public    # 作用域包必须带 --access public
 
 ```sh
 npm pack --dry-run             # 确认 tarball 里是 lib/ + cordis.patch.yml + README + LICENSE
-npm view @bushizhanghan/dsh-workbuddy version
+npm view @bushizhanghan/dsh-workmate version
 ```
 
 `prepack` 会自动跑 `pnpm build`，所以不需要手动 `lib/` 之后再发。
@@ -24,8 +24,8 @@ npm view @bushizhanghan/dsh-workbuddy version
 分类：**Models & Providers**（`README.md` 与 `README.zh.md` 各加一行，格式与邻近条目一致）
 
 ```md
-- [bushizhanghan/dsh-workbuddy](https://github.com/bushizhanghan/dsh-workbuddy) - WorkBuddy 国内版/国际版的免费与付费模型接入 DSH；兼容分支支持 dsh 0.2.0-rc.2 ~ 0.2.1。<!-- zh -->
-- [bushizhanghan/dsh-workbuddy](https://github.com/bushizhanghan/dsh-workbuddy) - WorkBuddy's free and paid models (domestic and international) for DSH; compat fork covering dsh 0.2.0-rc.2 through 0.2.1. <!-- en -->
+- [bushizhanghan/dsh-workmate](https://github.com/bushizhanghan/dsh-workbuddy) - WorkBuddy 国内版/国际版的免费与付费模型接入 DSH；兼容分支支持 dsh 0.2.0-rc.2 ~ 0.2.1。<!-- zh -->
+- [bushizhanghan/dsh-workmate](https://github.com/bushizhanghan/dsh-workbuddy) - WorkBuddy's free and paid models (domestic and international) for DSH; compat fork covering dsh 0.2.0-rc.2 through 0.2.1. <!-- en -->
 ```
 
 评审要点（对方会逐条核对）：能 `dsh plugin add` 装上、描述与代码一致、分类正确、有人维护。别写夸大数字。
@@ -34,7 +34,7 @@ npm view @bushizhanghan/dsh-workbuddy version
 
 - dsh 0.2.1+：**插件 → 发现 → 索引源** 里确认 `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json` 可读。
 - 目录站：<https://awesome-dsh-plugin.com>、<https://dshmarket.com> 通常一天内出现条目。
-- 装给自己验一遍：`dsh plugin --profile web add @bushizhanghan/dsh-workbuddy`。
+- 装给自己验一遍：`dsh plugin --profile web add @bushizhanghan/dsh-workmate`。
 
 ## 4. 与上游的关系（提 PR 时如实写）
 

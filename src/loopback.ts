@@ -4,7 +4,7 @@
  * Operators may add extra Host/Origin authorities for LAN DSH Web without
  * folding those names into {@link LOOPBACK_HOSTS}.
  *
- * @module dsh-workbuddy/loopback
+ * @module dsh-workmate/loopback
  */
 
 /** Loopback hostnames a local plugin surface may be addressed by. */

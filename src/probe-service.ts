@@ -2,14 +2,14 @@
  * Probe orchestration: the serial queue, the consent gate, and the bridge from
  * an observation to what the adapter may expose.
  *
- * Kept separate from {@link module:dsh-workbuddy/probe} so the protocol
+ * Kept separate from {@link module:dsh-workmate/probe} so the protocol
  * stays a pure function of one model's responses, while queueing, persistence,
  * and policy live here. Two rules are structural rather than advisory:
  *
  * - one probe at a time (a user's real chat must not contend with a sweep),
  * - nothing at all happens without explicit consent.
  *
- * @module dsh-workbuddy/probe-service
+ * @module dsh-workmate/probe-service
  */
 
 import type { WorkBuddyCredentialStoreLike } from './auth.ts'

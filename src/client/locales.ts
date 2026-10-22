@@ -1,7 +1,7 @@
 /**
  * Plugin-card copy, registered under the `settings.workbuddy-ai` locale namespace.
  *
- * @module dsh-workbuddy/client/locales
+ * @module dsh-workmate/client/locales
  */
 
 export const en = {

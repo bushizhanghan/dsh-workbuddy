@@ -2,7 +2,7 @@
  * Browser half: the WorkBuddy account and model-policy card as its own
  * section of the Settings sidebar.
  *
- * @module dsh-workbuddy/client
+ * @module dsh-workmate/client
  */
 
 import { WorkBuddyPluginCard } from './WorkBuddyPluginCard.tsx'
@@ -23,7 +23,7 @@ interface ClientContext {
 }
 
 /** Stable browser-plugin name. */
-export const name = 'dsh-workbuddy-client'
+export const name = 'dsh-workmate-client'
 
 /**
  * Client services required by the Plugin configuration contribution.
@@ -45,12 +45,12 @@ export const inject = ['slots', 'locale']
  * `console.error` instead of throwing into the DSH loader and raising the
  * "Failed to load plugins" banner. The host provider keeps working: the
  * `workbuddy-ai` model channel is unaffected, and
- * `dsh-workbuddy status` reports host health via the heartbeat file.
+ * `dsh-workmate status` reports host health via the heartbeat file.
  */
 export function apply(ctx: ClientContext): void {
   try {
     const namespace = 'settings.workbuddy-ai'
-    ctx.effect(() => ctx.locale.register(namespace, { zh, en }), 'dsh-workbuddy: settings copy')
+    ctx.effect(() => ctx.locale.register(namespace, { zh, en }), 'dsh-workmate: settings copy')
     const t = ctx.locale.bind(namespace) as WorkBuddyPluginCardInjected['t']
     // `settings.section` is the list slot the Settings sidebar renders as its
     // left-hand menu. `order: 16` sits just after the built-in sections
@@ -68,6 +68,6 @@ export function apply(ctx: ClientContext): void {
   } catch (error: unknown) {
     // Degrade silently on the page: the host provider still serves models.
     // Developers see the full cause in the browser console; users see no banner.
-    console.error('[dsh-workbuddy] client card failed to load (host provider unaffected):', error)
+    console.error('[dsh-workmate] client card failed to load (host provider unaffected):', error)
   }
 }

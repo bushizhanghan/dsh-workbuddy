@@ -11,7 +11,7 @@
  * never in the desktop app's files, and carries no token, prompt, or response
  * body — only model ids, effort spellings, and timestamps.
  *
- * @module dsh-workbuddy/probe-store
+ * @module dsh-workmate/probe-store
  */
 
 import { createHash } from 'node:crypto'

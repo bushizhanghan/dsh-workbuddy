@@ -16,7 +16,7 @@
  * - **Do not invent events for unknown tasks.** A code with no spec here gets no
  *   report at all rather than a heartbeat that lights nothing.
  *
- * @module dsh-workbuddy/growth-tasks
+ * @module dsh-workmate/growth-tasks
  */
 
 /** What one task code needs: which event to send, and how many of them. */

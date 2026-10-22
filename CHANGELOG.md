@@ -2,6 +2,13 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.0] - 2026-10-22
+
+### 变更
+
+- **包名改为 `@bushizhanghan/dsh-workmate`**：与上游 `dsh-workbuddy` 在 npm 上区分开，避免同名混淆。同步改了模块 id（`__ModuleLoader__.load({ id })` 用包名）、`cordis.patch.yml` 里 insert 的 `name`、CLI 命令名（`dsh-workmate`）与文档。
+- 模型 provider id 仍是 `workbuddy-ai`，**已有配置不用改**。
+
 ## [1.1.0] - 2026-10-22
 
 兼容分支首个版本，基线为上游 `dsh-workbuddy@1.0.12`（提交 `9951d25`）。此后的上游条目见下方，按原样保留。

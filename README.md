@@ -1,4 +1,4 @@
-<h1 align="center">DSH WorkBuddy</h1>
+<h1 align="center">DSH Workmate</h1>
 
 <p align="center">
   <em>Bring WorkBuddy's free and paid models (domestic and international) into DeepSeek Harness — no WorkBuddy desktop app required.</em>
@@ -31,8 +31,8 @@
   <img src="./docs/model-picker.png" alt="Picking a WorkBuddy model in the DSH model selector" width="92%">
 </p>
 
-> **Compatibility fork of [`Faide-cyber/dsh-workbuddy`](https://github.com/Faide-cyber/dsh-workbuddy)**, maintained by [@bushizhanghan](https://github.com/bushizhanghan).
-> Two changes only: the host version range is widened to `0.2.0-rc.2 ~ 0.2.1`, and the client name is rewritten in outgoing request bodies.
+> **Compatibility fork of [`Faide-cyber/dsh-workbuddy`](https://github.com/Faide-cyber/dsh-workbuddy)**, maintained by [@bushizhanghan](https://github.com/bushizhanghan). Published as `@bushizhanghan/dsh-workmate`.
+> Two code changes only: the host version range is widened to `0.2.0-rc.2 ~ 0.2.1`, and the client name is rewritten in outgoing request bodies.
 > Code and license follow upstream (MIT, © Faide-cyber). Switch back to the official package once upstream ships the fix.
 
 ## Differences from upstream
@@ -52,7 +52,7 @@ No host downgrade and no `compatibility.json` exemption needed — the range cov
 2. Install the plugin and start:
 
 ```sh
-dsh plugin --profile web add github:bushizhanghan/dsh-workbuddy
+dsh plugin --profile web add @bushizhanghan/dsh-workmate
 dsh web
 ```
 
@@ -62,7 +62,7 @@ dsh web
 You can also sign in from a terminal:
 
 ```sh
-dsh plugin --profile web exec dsh-workbuddy login
+dsh plugin --profile web exec dsh-workmate login
 ```
 
 **Restart `dsh web`** after installing, updating, or signing in. Refreshing the browser is not enough — Node modules stay in memory.
@@ -129,10 +129,10 @@ Environment variables:
 ## CLI
 
 ```sh
-dsh plugin --profile web exec dsh-workbuddy login
-dsh plugin --profile web exec dsh-workbuddy status
-dsh plugin --profile web exec dsh-workbuddy doctor
-dsh plugin --profile web exec dsh-workbuddy logout
+dsh plugin --profile web exec dsh-workmate login
+dsh plugin --profile web exec dsh-workmate status
+dsh plugin --profile web exec dsh-workmate doctor
+dsh plugin --profile web exec dsh-workmate logout
 ```
 
 `status` / `doctor` accept `--json`. `logout` only deletes `$DSH_HOME/.workbuddy-ai-auth.json`.
@@ -149,7 +149,7 @@ dsh plugin --profile web exec dsh-workbuddy logout
 | Want paid models | Switch the scope to "All models" on the settings card — credits will be burned |
 
 ```sh
-dsh plugin --profile web exec dsh-workbuddy doctor
+dsh plugin --profile web exec dsh-workmate doctor
 ```
 
 ## Disclaimer

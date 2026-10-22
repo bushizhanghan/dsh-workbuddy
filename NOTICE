@@ -17,6 +17,9 @@ same terms:
 2. Rewrote the client-name string `DeepSeek Harness` to `DeepSeek-Harness` in the
    outgoing chat request body, which the upstream service accepts as a known
    client name.
+3. Renamed the published package to `@bushizhanghan/dsh-workmate`, including the
+   client module id, the `cordis.patch.yml` insert name, the CLI command name and
+   the documentation. The model provider id (`workbuddy-ai`) is unchanged.
 
 Nothing else is changed relative to upstream 1.0.12. Reproducible diffs live in
 `patches/`. If upstream ships an equivalent fix, prefer the official package.

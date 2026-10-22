@@ -1,4 +1,4 @@
-<h1 align="center">DSH WorkBuddy</h1>
+<h1 align="center">DSH Workmate</h1>
 
 <p align="center">
   <em>把 WorkBuddy 国内版和国际版的免费/付费模型接进 DeepSeek Harness —— 无需下载 WorkBuddy 桌面端。</em>
@@ -17,7 +17,7 @@
 </p>
 
 > **这是 [`Faide-cyber/dsh-workbuddy`](https://github.com/Faide-cyber/dsh-workbuddy) 的兼容分支（fork）**，由 [@bushizhanghan](https://github.com/bushizhanghan) 维护。
-> 与上游的差别只有两处，见[与上游的差异](#与上游的差异)：宿主版本区间放宽到 `0.2.0-rc.2 ~ 0.2.1`，以及在请求体里改写客户端名。
+> 包名改为 `@bushizhanghan/dsh-workmate`，与上游的代码差别只有两处，见[与上游的差异](#与上游的差异)：宿主版本区间放宽到 `0.2.0-rc.2 ~ 0.2.1`，以及在请求体里改写客户端名。
 > 代码与许可沿用上游（MIT，© Faide-cyber）。上游合并后可切回官方包。
 
 - **登录**：按区域使用浏览器 OAuth，免桌面端登录；已装桌面 App 的凭据也可只读导入
@@ -54,7 +54,7 @@
 2. 安装插件并启动：
 
 ```sh
-dsh plugin --profile web add github:bushizhanghan/dsh-workbuddy
+dsh plugin --profile web add @bushizhanghan/dsh-workmate
 dsh web
 ```
 
@@ -64,7 +64,7 @@ dsh web
 也可以在终端登录：
 
 ```sh
-dsh plugin --profile web exec dsh-workbuddy login
+dsh plugin --profile web exec dsh-workmate login
 ```
 
 安装、更新或登录后必须**重启 `dsh web`**。刷新浏览器不够，Node 模块常驻内存。
@@ -131,10 +131,10 @@ agent-default-model:
 ## 命令行
 
 ```sh
-dsh plugin --profile web exec dsh-workbuddy login
-dsh plugin --profile web exec dsh-workbuddy status
-dsh plugin --profile web exec dsh-workbuddy doctor
-dsh plugin --profile web exec dsh-workbuddy logout
+dsh plugin --profile web exec dsh-workmate login
+dsh plugin --profile web exec dsh-workmate status
+dsh plugin --profile web exec dsh-workmate doctor
+dsh plugin --profile web exec dsh-workmate logout
 ```
 
 `status` / `doctor` 可加 `--json`。`logout` 只删 `$DSH_HOME/.workbuddy-ai-auth.json`。
@@ -151,7 +151,7 @@ dsh plugin --profile web exec dsh-workbuddy logout
 | 想用付费模型 | 设置卡片把范围改成「全部模型」，注意会扣积分 |
 
 ```sh
-dsh plugin --profile web exec dsh-workbuddy doctor
+dsh plugin --profile web exec dsh-workmate doctor
 ```
 
 ## 免责声明

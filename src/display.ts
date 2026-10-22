@@ -1,7 +1,7 @@
 /**
  * Node-free helpers shared by the Host and browser halves.
  *
- * @module dsh-workbuddy/display
+ * @module dsh-workmate/display
  */
 
 /**

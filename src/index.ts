@@ -15,7 +15,7 @@
  * 3. Two of its free models are absent from that catalog entirely and must be
  *    added from the app's product configuration.
  *
- * @module dsh-workbuddy
+ * @module dsh-workmate
  */
 
 import type { Context } from '@deepseek-ai/cordis'
@@ -357,7 +357,7 @@ export function apply(ctx: Context, config: Config): void {
       } catch (error: unknown) {
         // A credential file that cannot be read is not a sign-in; leaving the row
         // as it was beats flickering it off on a transient read error.
-        ctx.logger.warn(`dsh-workbuddy: could not read ${region} credentials`, error)
+        ctx.logger.warn(`dsh-workmate: could not read ${region} credentials`, error)
       }
     }
   }
@@ -834,7 +834,7 @@ export function apply(ctx: Context, config: Config): void {
       }
     }
     if (typeof settings.register !== 'function') {
-      ctx.logger.info('dsh-workbuddy: settings service has no register(); the card persists to its own file')
+      ctx.logger.info('dsh-workmate: settings service has no register(); the card persists to its own file')
       return
     }
     const scope = settings.register(WORKBUDDY_SETTINGS_NS, Config, { base: config })
@@ -864,7 +864,7 @@ export function apply(ctx: Context, config: Config): void {
       const filled = saved as Record<string, unknown>
       for (const [key, value] of Object.entries(fromSection)) if (!(key in filled)) filled[key] = value
       apply()
-    }), 'dsh-workbuddy: settings observer')
+    }), 'dsh-workmate: settings observer')
   })
 
   let stopped = false
@@ -947,7 +947,7 @@ export function apply(ctx: Context, config: Config): void {
         // after a crash is detected by PID in the reader.
         void writeHostHeartbeat()
       } catch (error: unknown) {
-        ctx.logger.error('dsh-workbuddy: provider registration failed', error)
+        ctx.logger.error('dsh-workmate: provider registration failed', error)
         return
       }
 
@@ -964,7 +964,7 @@ export function apply(ctx: Context, config: Config): void {
             targetCatalog.setUpstream(models)
           } catch (error: unknown) {
             ctx.logger.warn(
-              'dsh-workbuddy: dynamic model catalog unavailable; serving the static fallback list',
+              'dsh-workmate: dynamic model catalog unavailable; serving the static fallback list',
               error,
             )
           }
@@ -974,6 +974,6 @@ export function apply(ctx: Context, config: Config): void {
       })()
     })
     .catch((error: unknown) => {
-      ctx.logger.error('dsh-workbuddy: loopback endpoint failed to start; provider not registered', error)
+      ctx.logger.error('dsh-workmate: loopback endpoint failed to start; provider not registered', error)
     })
 }

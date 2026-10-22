@@ -9,7 +9,7 @@
  * guard keeps the bundle harmless when a build forgets to define it (it falls
  * back to a clearly-dev marker).
  *
- * @module dsh-workbuddy/version
+ * @module dsh-workmate/version
  */
 
 declare const __DSH_WORKBUDDY_VERSION__: string

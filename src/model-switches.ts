@@ -11,7 +11,7 @@
  * refresh happens to reload the catalog. It lives in its own module so the
  * ordering is testable: `src/index.ts` pulls DSH packages that no test can load.
  *
- * @module dsh-workbuddy/model-switches
+ * @module dsh-workmate/model-switches
  */
 
 import type { WorkBuddyCatalog } from './catalog.ts'

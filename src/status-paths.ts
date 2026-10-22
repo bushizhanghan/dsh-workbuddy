@@ -1,11 +1,11 @@
 /**
  * Node-free constants and types shared by the Host and browser halves.
  *
- * @module dsh-workbuddy/status-paths
+ * @module dsh-workmate/status-paths
  */
 
 /** Plugin-owned status endpoint consumed by its browser half. */
-export const WORKBUDDY_STATUS_PATH = '/plugins/dsh-workbuddy/status'
+export const WORKBUDDY_STATUS_PATH = '/plugins/dsh-workmate/status'
 
 /** Header carrying the per-process key on control requests. */
 export const WORKBUDDY_CONTROL_KEY_HEADER = 'x-workbuddy-control-key'
@@ -18,7 +18,7 @@ export const WORKBUDDY_CONTROL_KEY_HEADER = 'x-workbuddy-control-key'
  * not the same as authorizing a state-changing action. This route therefore also
  * requires the in-process key the browser half receives with the status document.
  */
-export const WORKBUDDY_CONTROL_PATH = '/plugins/dsh-workbuddy/control'
+export const WORKBUDDY_CONTROL_PATH = '/plugins/dsh-workmate/control'
 
 /** One model's recorded probe observation, as the card displays it. */
 export interface WorkBuddyWebProbeModel {

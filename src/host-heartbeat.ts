@@ -8,7 +8,7 @@
  * the load-bearing half, and a missing heartbeat unambiguously means the host
  * never started.
  *
- * @module dsh-workbuddy/host-heartbeat
+ * @module dsh-workmate/host-heartbeat
  */
 
 import { execFileSync } from 'node:child_process'
@@ -21,7 +21,7 @@ import { WORKBUDDY_VERSION } from './version.ts'
 export const WORKBUDDY_HOST_HEARTBEAT_FILENAME = '.workbuddy-ai-host-heartbeat.json'
 
 /** Package name stamped into the heartbeat, so readers can tell the two plugins apart. */
-const HEARTBEAT_PACKAGE = 'dsh-workbuddy'
+const HEARTBEAT_PACKAGE = 'dsh-workmate'
 
 /** Current on-disk heartbeat format; readers reject others. */
 const HEARTBEAT_FORMAT_VERSION = 1

@@ -11,7 +11,7 @@
  * Nothing but `Switch` is declared: a wider surface would be a promise this file
  * cannot keep in sync with the host.
  *
- * @module dsh-workbuddy/client/dsh-client-ui-primitives
+ * @module dsh-workmate/client/dsh-client-ui-primitives
  */
 
 declare module '@deepseek-ai/dsh-client-ui-primitives' {

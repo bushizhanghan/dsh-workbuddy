@@ -10,7 +10,7 @@
  * Login `state` stays in process memory so a same-origin card cannot resume a
  * poll it did not start.
  *
- * @module dsh-workbuddy/oauth
+ * @module dsh-workmate/oauth
  */
 
 import { spawn } from 'node:child_process'

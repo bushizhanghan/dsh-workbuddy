@@ -887,12 +887,12 @@ declare class WorkBuddyOAuthLogin {
  * the load-bearing half, and a missing heartbeat unambiguously means the host
  * never started.
  *
- * @module dsh-workbuddy/host-heartbeat
+ * @module dsh-workmate/host-heartbeat
  */
 /** Basename of the host heartbeat file inside the Harness home. */
 declare const WORKBUDDY_HOST_HEARTBEAT_FILENAME = ".workbuddy-ai-host-heartbeat.json";
 /** Package name stamped into the heartbeat, so readers can tell the two plugins apart. */
-declare const HEARTBEAT_PACKAGE = "dsh-workbuddy";
+declare const HEARTBEAT_PACKAGE = "dsh-workmate";
 /** Current on-disk heartbeat format; readers reject others. */
 declare const HEARTBEAT_FORMAT_VERSION = 1;
 /** On-disk shape of the heartbeat. */
@@ -947,10 +947,10 @@ declare function isHeartbeatProcessAlive(heartbeat: WorkBuddyHostHeartbeat): boo
 /**
  * Node-free constants and types shared by the Host and browser halves.
  *
- * @module dsh-workbuddy/status-paths
+ * @module dsh-workmate/status-paths
  */
 /** Plugin-owned status endpoint consumed by its browser half. */
-declare const WORKBUDDY_STATUS_PATH = "/plugins/dsh-workbuddy/status";
+declare const WORKBUDDY_STATUS_PATH = "/plugins/dsh-workmate/status";
 /**
  * Plugin-owned control endpoint.
  *
@@ -959,7 +959,7 @@ declare const WORKBUDDY_STATUS_PATH = "/plugins/dsh-workbuddy/status";
  * not the same as authorizing a state-changing action. This route therefore also
  * requires the in-process key the browser half receives with the status document.
  */
-declare const WORKBUDDY_CONTROL_PATH = "/plugins/dsh-workbuddy/control";
+declare const WORKBUDDY_CONTROL_PATH = "/plugins/dsh-workmate/control";
 /** One model's recorded probe observation, as the card displays it. */
 interface WorkBuddyWebProbeModel {
   id: string;

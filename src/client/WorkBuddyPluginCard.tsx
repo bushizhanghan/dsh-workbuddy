@@ -11,7 +11,7 @@
  * loopback origin and the in-process key. The card holds no credential and
  * cannot reach the upstream directly.
  *
- * @module dsh-workbuddy/client/WorkBuddyPluginCard
+ * @module dsh-workmate/client/WorkBuddyPluginCard
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'

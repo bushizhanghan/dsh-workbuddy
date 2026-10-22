@@ -4,7 +4,7 @@
  * route answers loopback (or explicitly allowed LAN) browser requests only
  * and never carries token material.
  *
- * @module dsh-workbuddy/web-status
+ * @module dsh-workmate/web-status
  */
 
 import type { IncomingMessage, ServerResponse } from 'node:http'
@@ -267,5 +267,5 @@ export function registerWorkBuddyStatusRoute(ctx: Context, deps: WorkBuddyStatus
     return () => {
       dispose()
     }
-  }, 'dsh-workbuddy: Web status route')
+  }, 'dsh-workmate: Web status route')
 }

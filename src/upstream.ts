@@ -24,7 +24,7 @@
  * The wire behavior is ported from Sliverkiss/workbuddy2api (MIT), whose Go
  * implementation is battle-tested against the real endpoint.
  *
- * @module dsh-workbuddy/upstream
+ * @module dsh-workmate/upstream
  */
 
 import type { WorkBuddyCredential } from './auth.ts'

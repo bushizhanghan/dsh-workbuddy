@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Standalone status/diagnostics CLI for the dsh-workbuddy bundle. */
+/** Standalone status/diagnostics CLI for the dsh-workmate bundle. */
 
 import { realpathSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -23,7 +23,7 @@ function safeMessage(error: unknown): string {
 
 function printHelp(): void {
   process.stdout.write([
-    'Usage: dsh-workbuddy <doctor|status|login|logout> [--json]',
+    'Usage: dsh-workmate <doctor|status|login|logout> [--json]',
     '',
     '  doctor   secret-free sign-in and environment diagnostics',
     '  status   sign-in state, remaining WorkBuddy credit, and host-bundle health',
@@ -51,7 +51,7 @@ async function doctor(jsonOutput: boolean): Promise<number> {
   const hostAlive = heartbeat !== undefined && isHeartbeatProcessAlive(heartbeat)
   const report = {
     schemaVersion: JSON_SCHEMA_VERSION,
-    package: 'dsh-workbuddy',
+    package: 'dsh-workmate',
     version: WORKBUDDY_VERSION,
     node: process.version,
     desktopAuthFile: {
@@ -67,7 +67,7 @@ async function doctor(jsonOutput: boolean): Promise<number> {
     },
     signIn: status.state,
     hints: [
-      ...status.state === 'signed-in' ? [] : ['Connect from the plugin card, or run: dsh plugin --profile web exec dsh-workbuddy login'],
+      ...status.state === 'signed-in' ? [] : ['Connect from the plugin card, or run: dsh plugin --profile web exec dsh-workmate login'],
       ...desktopPresent ? [] : ['Desktop auth file is optional; browser OAuth writes the plugin-owned copy instead.'],
       ...hostAlive ? [] : ['Host bundle not running in this DSH profile (or the process exited). The browser card and provider are unavailable until DSH starts the plugin.'],
     ],
@@ -115,7 +115,7 @@ async function status(jsonOutput: boolean): Promise<number> {
   const hostState = hostAlive ? 'running' : heartbeat !== undefined ? 'stale' : 'not-started'
   if (authStatus.state !== 'signed-in') {
     if (jsonOutput) {
-      printJson({ schemaVersion: JSON_SCHEMA_VERSION, package: 'dsh-workbuddy', version: WORKBUDDY_VERSION, status: 'signed-out', hostBundle: hostState })
+      printJson({ schemaVersion: JSON_SCHEMA_VERSION, package: 'dsh-workmate', version: WORKBUDDY_VERSION, status: 'signed-out', hostBundle: hostState })
     } else {
       process.stdout.write(`DSH WorkBuddy: signed out\nHost bundle: ${hostState}\n`)
     }
@@ -132,7 +132,7 @@ async function status(jsonOutput: boolean): Promise<number> {
   if (jsonOutput) {
     printJson({
       schemaVersion: JSON_SCHEMA_VERSION,
-      package: 'dsh-workbuddy',
+      package: 'dsh-workmate',
       version: WORKBUDDY_VERSION,
       status: 'signed-in',
       ...expiresAt === undefined ? {} : { accessTokenExpires: expiresAt },
@@ -167,14 +167,14 @@ export async function run(argv: readonly string[]): Promise<number> {
   const [rawAction, ...flags] = argv
   const actions: readonly Action[] = ['doctor', 'login', 'logout', 'status']
   if (!actions.includes(rawAction as Action)) {
-    process.stderr.write(`dsh-workbuddy: expected doctor, login, logout, or status; got ${JSON.stringify(rawAction)}\n`)
+    process.stderr.write(`dsh-workmate: expected doctor, login, logout, or status; got ${JSON.stringify(rawAction)}\n`)
     return 1
   }
   const action = rawAction as Action
   const jsonOutput = flags.includes('--json')
   const unknown = flags.filter(flag => flag !== '--json')
   if (unknown.length > 0 || (jsonOutput && (action === 'logout' || action === 'login'))) {
-    process.stderr.write(`dsh-workbuddy: invalid options for ${action}: ${flags.join(' ')}\n`)
+    process.stderr.write(`dsh-workmate: invalid options for ${action}: ${flags.join(' ')}\n`)
     return 1
   }
   try {
@@ -193,7 +193,7 @@ export async function run(argv: readonly string[]): Promise<number> {
       }
     }
   } catch (error: unknown) {
-    process.stderr.write(`dsh-workbuddy: ${action} failed: ${safeMessage(error)}\n`)
+    process.stderr.write(`dsh-workmate: ${action} failed: ${safeMessage(error)}\n`)
     return 1
   }
 }

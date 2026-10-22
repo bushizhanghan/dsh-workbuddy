@@ -9,7 +9,7 @@
  * adapter with no directory entry, or a directory entry with no adapter, renders
  * as a provider that cannot be used.
  *
- * @module dsh-workbuddy/provider-rows
+ * @module dsh-workmate/provider-rows
  */
 
 import type { WorkBuddyAdapter } from './adapter.ts'

@@ -14,7 +14,7 @@
  * The route never accepts a prompt, a model id outside the live catalog, or a
  * sentinel from the browser: a probe request is assembled entirely host-side.
  *
- * @module dsh-workbuddy/control-route
+ * @module dsh-workmate/control-route
  */
 
 import { randomBytes, timingSafeEqual } from 'node:crypto'
@@ -351,5 +351,5 @@ export function registerWorkBuddyControlRoute(
     return () => {
       dispose()
     }
-  }, 'dsh-workbuddy: control route')
+  }, 'dsh-workmate: control route')
 }
