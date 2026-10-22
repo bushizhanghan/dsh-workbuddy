@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.2.2] - 2026-10-22
+
+### Note
+
+- Identical to 1.2.1. That version was submitted to npm and never left the staging queue (`E409 Cannot publish over previously staged version`), so the number is burned and 1.2.2 carries the same content.
+
 ## [1.2.1] - 2026-10-22
 
 ### Fixed

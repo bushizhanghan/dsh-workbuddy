@@ -2,7 +2,7 @@
   "name": "@bushizhanghan/dsh-workmate",
   "displayName": "DSH Workmate (compat fork)",
   "description": "把 WorkBuddy 国内版和国际版的免费/付费模型接进 DeepSeek Harness —— 无需下载 WorkBuddy 桌面端。兼容分支（原 dsh-workbuddy），宿主版本区间 0.2.0-rc.2 ~ 0.2.1。 — WorkBuddy's free and paid models for DeepSeek Harness; compat fork of dsh-workbuddy (dsh 0.2.0-rc.2 ~ 0.2.1).",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "bushizhanghan (fork of dsh-workbuddy by Faide-cyber)",
   "keywords": [
     "dsh-plugin",

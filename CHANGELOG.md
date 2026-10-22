@@ -2,6 +2,12 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.2] - 2026-10-22
+
+### 说明
+
+- 与 1.2.1 内容完全一致。1.2.1 提交到 npm 后进入暂存队列未能上线（`E409 Cannot publish over previously staged version`），版本号作废，改发 1.2.2。
+
 ## [1.2.1] - 2026-10-22
 
 ### 修复
