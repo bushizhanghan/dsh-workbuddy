@@ -4,10 +4,21 @@
 
 ## 1. 发布 npm 包
 
+npm 现在硬性要求：**发布必须满足其一 —— 账号开了 2FA，或用带 Bypass 2FA 的 granular access token**。账号 `tfa:false` 时任何 OTP 都会被拒（`E403 Two-factor authentication or granular access token with bypass 2fa enabled is required`）。
+
+开 2FA 最快的做法是命令行，不用走网页向导：
+
 ```sh
-npm login                      # 一次性，需要 OTP
+npm profile enable-2fa auth-and-writes   # 终端出二维码 → 验证器 App 扫 → 输 6 位码 → 抄走恢复码
+```
+
+然后发布（**不要**预先写 `--otp=`，让 npm 自己停下来问，避免和 30 秒倒计时赛跑）：
+
+```sh
 npm publish --access public    # 作用域包必须带 --access public
 ```
+
+坑：**安全密钥（Security key / passkey / Windows Hello）不能用于命令行发布**——CLI 只认 6 位 TOTP，网页向导里进到 "Add your security key" 就是走错了，退回上一步选 "Authenticator app"。若账号只绑了安全密钥，只能建 granular token（Read and write + 勾 Bypass 2FA + scope 选 `@bushizhanghan`），写进 `~/.npmrc` 的 `//registry.npmjs.org/:_authToken=`。
 
 发布前自检：
 
