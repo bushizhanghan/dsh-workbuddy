@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-65a30d?style=flat" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/dsh-0.2.0--rc.2-4f46e5?style=flat" alt="DSH 0.2.0-rc.2">
+  <img src="https://img.shields.io/badge/dsh-0.2.0_~_0.2.1-4f46e5?style=flat" alt="DSH 0.2.0 ~ 0.2.1">
   <img src="https://img.shields.io/badge/providers-two-0ea5e9?style=flat" alt="two providers">
   <img src="https://img.shields.io/badge/prices-live_catalog-brightgreen?style=flat" alt="prices from the live catalog">
   <img src="https://img.shields.io/badge/runtime_dependencies-zero-brightgreen?style=flat" alt="zero runtime dependencies">
@@ -15,6 +15,10 @@
 <p align="center">
   <a href="./README.md">English</a> · <b>中文</b>
 </p>
+
+> **这是 [`Faide-cyber/dsh-workbuddy`](https://github.com/Faide-cyber/dsh-workbuddy) 的兼容分支（fork）**，由 [@bushizhanghan](https://github.com/bushizhanghan) 维护。
+> 与上游的差别只有两处，见[与上游的差异](#与上游的差异)：宿主版本区间放宽到 `0.2.0-rc.2 ~ 0.2.1`，以及在请求体里改写客户端名。
+> 代码与许可沿用上游（MIT，© Faide-cyber）。上游合并后可切回官方包。
 
 - **登录**：按区域使用浏览器 OAuth，免桌面端登录；已装桌面 App 的凭据也可只读导入
 - **账号**：区域隔离的多账号列表、显式切换、余额显示与预警；提供账号备注功能；插件副本与桌面 auth 文件分离
@@ -31,13 +35,26 @@
   <img src="./docs/model-picker.png" alt="在 DSH 模型选择器里选择 WorkBuddy 模型" width="92%">
 </p>
 
+## 与上游的差异
+
+相对上游 1.0.12（提交 `9951d25`）只有两处改动，完整 diff 见 `patches/`：
+
+| # | 改动 | 为什么 |
+|---|---|---|
+| 1 | `peerDependencies` 里 7 个 `@deepseek-ai/dsh-*` 从精确的 `0.2.0-rc.2` 改为 `>=0.2.0-rc.2 <0.3.0-0` | dsh 在加载插件前会逐条比对 `@deepseek-ai/dsh*` peer 是否满足当前运行时。精确钉死会让 0.2.1-rc.2 上全项不满足，插件被拒载，报「要求宿主 0.2.0-rc.2，当前运行 0.2.1-rc.2」 |
+| 2 | 聊天请求体里把 `DeepSeek Harness` 统一改写为 `DeepSeek-Harness` | 上游按客户端名校验，宿主默认名带空格会被判成未知客户端 |
+
+装这个分支**不需要**再改宿主版本，也不需要写 `compatibility.json` 的 exact-version 豁免——版本区间本身就覆盖 0.2.1。
+
+上界 ` <0.3.0-0` 是刻意留的红线：0.3 若改了插件接口，这个包不该假装还能用。到时要么跟上游，要么重新跑一遍兼容测试。
+
 ## 快速开始
 
 1. Node 22+，已安装 DSH。
 2. 安装插件并启动：
 
 ```sh
-dsh plugin --profile web add github:Faide-cyber/dsh-workbuddy
+dsh plugin --profile web add github:bushizhanghan/dsh-workbuddy
 dsh web
 ```
 

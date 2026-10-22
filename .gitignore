@@ -7,3 +7,4 @@ coverage
 logs
 ci-logs
 *.log
+node_modules.broken

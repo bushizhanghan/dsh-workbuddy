@@ -1,0 +1,22 @@
+DSH WorkBuddy — compatibility fork
+==================================
+
+This repository is a fork of `dsh-workbuddy`
+(https://github.com/Faide-cyber/dsh-workbuddy), revision 9951d25 (v1.0.12).
+
+Upstream copyright: Copyright (c) 2026 Faide-cyber, released under the MIT License.
+The full upstream license text is kept unchanged in LICENSE and applies to the
+whole work, including the modifications below.
+
+Modifications in this fork (Copyright (c) 2026 busizhanghan), MIT-licensed on the
+same terms:
+
+1. Widened the `@deepseek-ai/dsh-*` peer dependency ranges from the exact pin
+   `0.2.0-rc.2` to `>=0.2.0-rc.2 <0.3.0-0`, so DeepSeek Harness 0.2.1-rc.2 no
+   longer rejects the plugin at load time.
+2. Rewrote the client-name string `DeepSeek Harness` to `DeepSeek-Harness` in the
+   outgoing chat request body, which the upstream service accepts as a known
+   client name.
+
+Nothing else is changed relative to upstream 1.0.12. Reproducible diffs live in
+`patches/`. If upstream ships an equivalent fix, prefer the official package.

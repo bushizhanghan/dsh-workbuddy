@@ -588,10 +588,14 @@ export class WorkBuddyUpstreamClient {
   ): Promise<WorkBuddyChatResult> {
     let response: Response
     try {
+      // [fork] 宿主默认把自身称作 "DeepSeek Harness"（带空格），上游按客户端名
+      // 校验时会被判成未知客户端而拒绝。请求体里出现的同名字符串统一改写成
+      // 上游认识的 "DeepSeek-Harness" 形式；其余内容原样透传。
+      const outboundBody = bodyJson.split('DeepSeek Harness').join('DeepSeek-Harness')
       response = await fetch(`${chatBase(credential)}/v2/chat/completions`, {
         method: 'POST',
         headers: { ...chatHeaders(credential), 'Authorization': `Bearer ${credential.accessToken}` },
-        body: bodyJson,
+        body: outboundBody,
         ...signal === undefined ? {} : { signal },
       })
     } catch (error: unknown) {

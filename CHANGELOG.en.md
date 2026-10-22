@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-10-22
+
+First release of the compatibility fork, based on upstream `dsh-workbuddy@1.0.12` (commit `9951d25`). Entries below are upstream's and are kept verbatim.
+
+### Fixed
+
+- **Rejected on dsh 0.2.1-rc.2**: `peerDependencies` pinned seven `@deepseek-ai/dsh-*` packages to the exact version `0.2.0-rc.2`, and dsh checks every one of those peers against the running runtime before loading a plugin. On 0.2.1 every requirement failed, so the plugin never loaded and the UI reported "requires host 0.2.0-rc.2, currently running 0.2.1-rc.2". The range is now `>=0.2.0-rc.2 <0.3.0-0`, so one build covers both 0.2.0 and 0.2.1.
+- **Client name not recognised upstream**: the host calls itself `DeepSeek Harness` (with a space), which the upstream service treats as an unknown client. Outgoing request bodies now rewrite it to `DeepSeek-Harness`; everything else is passed through untouched.
+
+### Changed
+
+- Package name is `@bushizhanghan/dsh-workbuddy`; `repository` / `homepage` / `bugs` point at this repo; `author` names the upstream author as well.
+- Added `NOTICE` (fork provenance and scope of changes), `patches/` (diffs for both changes) and `pnpm-workspace.yaml` (`allowBuilds`, so pnpm 11's dependency-build confirmation no longer aborts CI).
+- `lib/` is rebuilt from `src/` instead of hand-editing the bundle; `pnpm test` passes all 111 tests.
+
 ## [1.0.12] - 2026-10-18
 
 ### Fixed

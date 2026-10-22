@@ -31,13 +31,28 @@
   <img src="./docs/model-picker.png" alt="Picking a WorkBuddy model in the DSH model selector" width="92%">
 </p>
 
+> **Compatibility fork of [`Faide-cyber/dsh-workbuddy`](https://github.com/Faide-cyber/dsh-workbuddy)**, maintained by [@bushizhanghan](https://github.com/bushizhanghan).
+> Two changes only: the host version range is widened to `0.2.0-rc.2 ~ 0.2.1`, and the client name is rewritten in outgoing request bodies.
+> Code and license follow upstream (MIT, © Faide-cyber). Switch back to the official package once upstream ships the fix.
+
+## Differences from upstream
+
+Two changes relative to upstream 1.0.12 (commit `9951d25`); see `patches/` for the full diffs:
+
+| # | Change | Why |
+|---|---|---|
+| 1 | The seven `@deepseek-ai/dsh-*` peers go from the exact pin `0.2.0-rc.2` to `>=0.2.0-rc.2 <0.3.0-0` | dsh compares every `@deepseek-ai/dsh*` peer against the running runtime before loading a plugin. An exact pin fails wholesale on 0.2.1-rc.2, so the plugin is rejected with "requires host 0.2.0-rc.2, currently running 0.2.1-rc.2" |
+| 2 | `DeepSeek Harness` is rewritten to `DeepSeek-Harness` in the chat request body | the upstream service validates the client name, and the host's default name (with a space) is treated as an unknown client |
+
+No host downgrade and no `compatibility.json` exemption needed — the range covers 0.2.1 by itself. The `<0.3.0-0` upper bound is deliberate: 0.3 may change the plugin API, and this package will not pretend otherwise.
+
 ## Quick start
 
 1. Node 22+, with DSH installed.
 2. Install the plugin and start:
 
 ```sh
-dsh plugin --profile web add github:Faide-cyber/dsh-workbuddy
+dsh plugin --profile web add github:bushizhanghan/dsh-workbuddy
 dsh web
 ```
 

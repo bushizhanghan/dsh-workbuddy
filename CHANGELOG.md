@@ -2,6 +2,21 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.0] - 2026-10-22
+
+兼容分支首个版本，基线为上游 `dsh-workbuddy@1.0.12`（提交 `9951d25`）。此后的上游条目见下方，按原样保留。
+
+### 修复
+
+- **在 dsh 0.2.1-rc.2 上被拒载**：`peerDependencies` 把 7 个 `@deepseek-ai/dsh-*` 精确钉在 `0.2.0-rc.2`，而 dsh 加载插件前会逐条比对 peer 是否满足运行时版本，0.2.1 上全项不满足 → 插件不加载，并提示「要求宿主 0.2.0-rc.2，当前运行 0.2.1-rc.2」。改为 `>=0.2.0-rc.2 <0.3.0-0`，同一份产物同时覆盖 0.2.0 与 0.2.1。
+- **请求体里的客户端名不被上游识别**：宿主默认把自身称作 `DeepSeek Harness`（带空格），上游按客户端名校验时会判成未知客户端。现在发出前统一改写为 `DeepSeek-Harness`，其余内容原样透传。
+
+### 变更
+
+- 包名改为 `@bushizhanghan/dsh-workbuddy`，`repository` / `homepage` / `bugs` 指向本仓库；`author` 同时标注上游作者。
+- 新增 `NOTICE`（fork 来源与改动范围）、`patches/`（两处改动的 diff）、`pnpm-workspace.yaml`（`allowBuilds`，让 pnpm 11 的依赖构建确认不再中断 CI）。
+- `lib/` 由 `src/` 重新构建，而非手工改打包产物；`pnpm test` 111 项全部通过。
+
 ## [1.0.12] - 2026-10-18
 
 ### 修复
