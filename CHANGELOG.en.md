@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.2.4] - 2026-10-23
+
+### Changed
+
+- **Repository renamed**: `bushizhanghan/dsh-workbuddy` → `bushizhanghan/dsh-workbuddy-harness`. `repository` / `homepage` / `bugs` in `package.json` point at the new address.
+- The marketplace entry is renamed to `data/plugins/bushizhanghan__dsh-workbuddy-harness.yml`, its page moves to `/p/bushizhanghan/dsh-workbuddy-harness/`, and the install tarball now comes from the new repository's `releases/latest/download/dsh-workmate.tgz`.
+- **The npm package name is unchanged** — still `@bushizhanghan/dsh-workmate`, with the same module id, provider id (`workbuddy-ai`) and CLI command (`dsh-workmate`). Existing installs need no configuration change.
+- GitHub redirects the old repository URLs (302) to the new ones, so old clone URLs, release links and marketplace entries keep working for now.
+
 ## [1.2.3] - 2026-10-23
 
 ### Changed

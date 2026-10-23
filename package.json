@@ -2,7 +2,7 @@
   "name": "@bushizhanghan/dsh-workmate",
   "displayName": "DSH Workmate",
   "description": "把 WorkBuddy 国内版与国际版的免费/付费模型接进 DeepSeek Harness，无需桌面端。WorkBuddy's free and paid models for DeepSeek Harness, international and domestic, no desktop app required.",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "bushizhanghan",
   "contributors": [
     {
@@ -59,10 +59,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bushizhanghan/dsh-workbuddy.git"
+    "url": "git+https://github.com/bushizhanghan/dsh-workbuddy-harness.git"
   },
-  "homepage": "https://github.com/bushizhanghan/dsh-workbuddy#readme",
-  "bugs": "https://github.com/bushizhanghan/dsh-workbuddy/issues",
+  "homepage": "https://github.com/bushizhanghan/dsh-workbuddy-harness#readme",
+  "bugs": "https://github.com/bushizhanghan/dsh-workbuddy-harness/issues",
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"

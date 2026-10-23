@@ -2,6 +2,15 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.4] - 2026-10-23
+
+### 变更
+
+- **仓库改名**：`bushizhanghan/dsh-workbuddy` → `bushizhanghan/dsh-workbuddy-harness`。`package.json` 的 `repository` / `homepage` / `bugs` 同步指向新地址。
+- 插件市场条目随之改名为 `data/plugins/bushizhanghan__dsh-workbuddy-harness.yml`，页面路径变为 `/p/bushizhanghan/dsh-workbuddy-harness/`，安装包地址改为新仓库的 `releases/latest/download/dsh-workmate.tgz`。
+- **npm 包名不变**，仍是 `@bushizhanghan/dsh-workmate`，模块 id、provider id（`workbuddy-ai`）、CLI 命令（`dsh-workmate`）也都不变 —— 已安装的用户不需要改任何配置。
+- GitHub 会把旧仓库地址 302 重定向到新地址，旧的 clone URL、Release 链接、市场条目短期内仍可访问。
+
 ## [1.2.3] - 2026-10-23
 
 ### 变更

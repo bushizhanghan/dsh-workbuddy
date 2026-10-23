@@ -8,10 +8,10 @@
 <https://github.com/awesome-dsh-plugin/awesome-dsh-plugin> 仓库里的
 `data/plugins/<owner>__<repo>.yml`。本包条目已合并：
 
-- 文件：`data/plugins/bushizhanghan__dsh-workbuddy.yml`（PR #8658）
+- 文件：`data/plugins/bushizhanghan__dsh-workbuddy-harness.yml`（PR #8658）
 - 分类：`model`（Models & Providers）
-- 页面：<https://awesome-dsh-plugin.com/p/bushizhanghan/dsh-workbuddy/>
-- 安装包地址：`https://github.com/bushizhanghan/dsh-workbuddy/releases/latest/download/dsh-workmate.tgz`
+- 页面：<https://awesome-dsh-plugin.com/p/bushizhanghan/dsh-workbuddy-harness/>
+- 安装包地址：`https://github.com/bushizhanghan/dsh-workbuddy-harness/releases/latest/download/dsh-workmate.tgz`
 
 注意 `tarball` 指向 `releases/latest`，所以**发新版只要更新 Release 附件，条目不用再改**。
 
@@ -52,7 +52,7 @@ mv bushizhanghan-dsh-workmate-<version>.tgz dsh-workmate.tgz
 gh release create v<version> dsh-workmate.tgz --title v<version> --notes "..."
 ```
 
-没有 `gh` 时用 API：先 `POST /repos/bushizhanghan/dsh-workbuddy/releases` 建 tag，
+没有 `gh` 时用 API：先 `POST /repos/bushizhanghan/dsh-workbuddy-harness/releases` 建 tag，
 再 `POST https://uploads.github.com/repos/.../releases/<id>/assets?name=dsh-workmate.tgz`
 （`Content-Type: application/gzip`，`--data-binary @dsh-workmate.tgz`）。
 
@@ -60,7 +60,7 @@ gh release create v<version> dsh-workmate.tgz --title v<version> --notes "..."
 
 ```sh
 npm view @bushizhanghan/dsh-workmate version
-curl -sL -o /tmp/x.tgz https://github.com/bushizhanghan/dsh-workbuddy/releases/latest/download/dsh-workmate.tgz && tar -tzf /tmp/x.tgz | head
+curl -sL -o /tmp/x.tgz https://github.com/bushizhanghan/dsh-workbuddy-harness/releases/latest/download/dsh-workmate.tgz && tar -tzf /tmp/x.tgz | head
 dsh plugin --profile web add @bushizhanghan/dsh-workmate
 ```
 
