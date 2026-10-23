@@ -392,3 +392,55 @@ describe('fetchCheckinStatus streak', () => {
     expect(status.streakDays).toBe(11)
   })
 })
+
+describe('transport failures', () => {
+  const chat = (client: WorkBuddyUpstreamClient): ReturnType<WorkBuddyUpstreamClient['chatStream']> =>
+    client.chatStream(credential, JSON.stringify({ model: 'hy3', messages: [] }))
+
+  const transportError = (code: string, message: string): TypeError =>
+    new TypeError('fetch failed', { cause: Object.assign(new Error(message), { code }) })
+
+  it('retries once on a pooled-socket failure and succeeds on the fresh one', async () => {
+    let calls = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      calls += 1
+      // A socket the upstream closed while it sat idle in the pool: exactly what a
+      // long-lived shim hits hours after start-up.
+      if (calls === 1) throw transportError('ECONNRESET', 'read ECONNRESET')
+      return new Response('data: [DONE]\n\n', { status: 200, headers: { 'content-type': 'text/event-stream' } })
+    })
+
+    const result = await chat(new WorkBuddyUpstreamClient())
+    expect(calls).toBe(2)
+    expect(result.ok).toBe(true)
+  })
+
+  it('surfaces the cause code when both attempts fail', async () => {
+    let calls = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      calls += 1
+      throw transportError('ENOTFOUND', 'getaddrinfo ENOTFOUND www.workbuddy.ai')
+    })
+
+    const result = await chat(new WorkBuddyUpstreamClient())
+    expect(calls).toBe(2)
+    expect(result.ok).toBe(false)
+    if (result.ok) return
+    expect(result.status).toBe(0)
+    // `TypeError: fetch failed` alone tells the user nothing; the cause code is
+    // the part that distinguishes DNS from a reset socket from a TLS failure.
+    expect(result.message).toContain('ENOTFOUND')
+  })
+
+  it('does not replay a failure that is not a transport error', async () => {
+    let calls = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      calls += 1
+      throw new Error('unexpected internal failure')
+    })
+
+    const result = await chat(new WorkBuddyUpstreamClient())
+    expect(calls).toBe(1)
+    expect(result.ok).toBe(false)
+  })
+})

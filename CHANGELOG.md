@@ -2,6 +2,19 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.5] - 2026-10-23
+
+### 修复
+
+- **`502 ... upstream server (http 0): transport error: TypeError: fetch failed`**：插件用随机端口起一个长驻 shim，`fetch` 走 undici 的连接池。进程跑上几个小时后，池里那条 socket 可能已被上游关闭，或 DNS 记录随边缘 IP 变化而过期——下一次聊天请求复用它就直接 `fetch failed`，而代码一次都不重试，用户只看到 502 和一句没有任何信息量的 `fetch failed`。
+  - 新增 `fetchUpstream()`：**只在传输层失败时重试一次**（`fetch failed` / `ECONNRESET` / `ECONNREFUSED` / `ETIMEDOUT` / `EAI_AGAIN` / `ENOTFOUND` / `EPIPE` / `socket hang up`）。已经拿到 HTTP 响应的请求绝不重放——聊天端点不是幂等的。
+  - 聊天与模型目录两条路径都改用它。
+  - 新增 `describeFetchError()`：把 undici 藏在 `cause` 里的 `ECONNRESET` / `ENOTFOUND` / `CERT_HAS_EXPIRED` 带进错误消息，不再只剩 `TypeError: fetch failed`。
+
+### 说明
+
+- 新增 3 项回归断言（池内 socket 失效后重试成功、两次都失败时透出 cause、非传输错误不重试），测试总数 111 → 114。
+
 ## [1.2.4] - 2026-10-23
 
 ### 变更

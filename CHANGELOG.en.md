@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.2.5] - 2026-10-23
+
+### Fixed
+
+- **`502 ... upstream server (http 0): transport error: TypeError: fetch failed`**: the plugin runs a long-lived shim on a random port, and its `fetch` calls go through undici's connection pool. After a few hours, a socket in that pool may have been closed by the upstream, or the DNS answer may be stale after an edge IP change — the next chat request reuses it, fails with `fetch failed`, and nothing retries. The user sees a 502 and a message that carries no actionable information.
+  - Added `fetchUpstream()`: **retries once, transport failures only** (`fetch failed` / `ECONNRESET` / `ECONNREFUSED` / `ETIMEDOUT` / `EAI_AGAIN` / `ENOTFOUND` / `EPIPE` / `socket hang up`). A request that already produced an HTTP response is never replayed — the chat endpoint is not idempotent.
+  - Both the chat path and the model-catalog path now use it.
+  - Added `describeFetchError()`: it lifts the `ECONNRESET` / `ENOTFOUND` / `CERT_HAS_EXPIRED` code out of undici's `cause` and into the message, so the error no longer reads as a bare `TypeError: fetch failed`.
+
+### Note
+
+- Three regression assertions added (retry succeeds on a fresh socket, both attempts failing surfaces the cause, non-transport errors are not retried); 111 → 114 tests.
+
 ## [1.2.4] - 2026-10-23
 
 ### Changed
