@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Lets the maintainer re-run the matrix by hand without pushing a commit.
+  workflow_dispatch:
 
 permissions:
   contents: read
