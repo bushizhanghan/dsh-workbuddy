@@ -45,5 +45,8 @@ jobs:
         shell: bash
         run: |
           set -e
-          head -2 lib/client.js | grep -q 'id: "dsh-workbuddy"'
+          # Read the module id from package.json instead of hard-coding it, so a
+          # rename cannot leave this check asserting the previous name.
+          PLUGIN_ID="$(node -p "require('./package.json').name")"
+          head -2 lib/client.js | grep -qF "id: \"$PLUGIN_ID\""
           test -f lib/index.js && test -f lib/bin.js
