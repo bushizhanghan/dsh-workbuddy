@@ -1,73 +1,59 @@
-<h1 align="center">DSH Workmate</h1>
+# DSH Workmate
 
-<p align="center">
-  <em>Bring WorkBuddy's free and paid models (domestic and international) into DeepSeek Harness — no WorkBuddy desktop app required.</em>
-</p>
+A DeepSeek Harness plugin that puts WorkBuddy's model catalog into DSH — both the
+international (`www.workbuddy.ai`) and the domestic (`copilot.tencent.com`)
+deployment, free and paid models alike. The WorkBuddy desktop app is **not**
+required: sign in from the browser, and the plugin keeps its own per-region
+credentials under `$DSH_HOME`.
 
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-65a30d?style=flat" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/dsh-0.2.0--rc.2-4f46e5?style=flat" alt="DSH 0.2.0-rc.2">
-  <img src="https://img.shields.io/badge/providers-two-0ea5e9?style=flat" alt="two providers">
-  <img src="https://img.shields.io/badge/prices-live_catalog-brightgreen?style=flat" alt="prices from the live catalog">
-  <img src="https://img.shields.io/badge/runtime_dependencies-zero-brightgreen?style=flat" alt="zero runtime dependencies">
-</p>
+- **Sign-in** — browser OAuth against the official CLI endpoints, one flow per
+  region. If a desktop app is already installed and signed in, its credential
+  can be imported read-only instead.
+- **Accounts** — a separate account list per region, explicit switching,
+  remaining credits on the card, and an optional note per account. The plugin's
+  credential copies never write to the desktop app's files.
+- **Daily check-in** — one action collects the daily check-in, the growth trip,
+  and every growth-center task. Automatic check-in is available and off by
+  default.
+- **Region isolation** — credentials, model catalogs, and credit balances are
+  kept apart. Switching accounts only affects subsequent requests; anything
+  already in flight keeps its original account.
+- **No configuration required** — install it, enable it, pick a model.
 
-<p align="center">
-  <b>English</b> · <a href="./README.zh.md">中文</a>
-</p>
+Supported host: DSH `0.2.0-rc.2` through `0.2.1`.
 
-- **Sign-in**: per-region browser OAuth, no desktop sign-in at all; a credential from an installed desktop app can still be imported read-only
-- **Accounts**: region-isolated multi-account list, explicit switching, credit display and warnings; accounts can be given their own names; the plugin's copies are kept apart from the desktop auth files
-- **One-click check-in**: daily check-in, the cat's growth trip and every growth-center task (签到 / 猫猫旅行) collected in a single action; auto check-in is available and off by default
-- **Device isolation**: each account's credential, its model catalog and its credit balance stand apart; switching accounts never touches in-flight requests
-- **Works out of the box**: install it, enable it, and use it from DSH — no extra configuration; DSH 0.2.0-rc.2 desktop is supported today
+## Requirements
 
-<p align="center">
-  <img src="./docs/card-accounts.png" alt="DSH WorkBuddy settings card: accounts and credits" width="46%">
-  <img src="./docs/card-models.png" alt="DSH WorkBuddy settings card: model scope and switches" width="46%">
-</p>
+- Node.js 22.19+ or 24+
+- DeepSeek Harness with the `web` profile
+- A WorkBuddy account in either region
 
-<p align="center">
-  <img src="./docs/model-picker.png" alt="Picking a WorkBuddy model in the DSH model selector" width="92%">
-</p>
-
-> **Compatibility fork of [`Faide-cyber/dsh-workbuddy`](https://github.com/Faide-cyber/dsh-workbuddy)**, maintained by [@bushizhanghan](https://github.com/bushizhanghan). Published as `@bushizhanghan/dsh-workmate`.
-> Two code changes only: the host version range is widened to `0.2.0-rc.2 ~ 0.2.1`, and the client name is rewritten in outgoing request bodies.
-> Code and license follow upstream (MIT, © Faide-cyber). Switch back to the official package once upstream ships the fix.
-
-## Differences from upstream
-
-Two changes relative to upstream 1.0.12 (commit `9951d25`); see `patches/` for the full diffs:
-
-| # | Change | Why |
-|---|---|---|
-| 1 | The seven `@deepseek-ai/dsh-*` peers go from the exact pin `0.2.0-rc.2` to `>=0.2.0-rc.2 <0.2.1 \|\| >=0.2.1-0 <0.3.0-0` | dsh compares every `@deepseek-ai/dsh*` peer against the running runtime before loading a plugin. An exact pin fails wholesale on 0.2.1-rc.2, so the plugin is rejected with "requires host 0.2.0-rc.2, currently running 0.2.1-rc.2". A single `>=0.2.0-rc.2 <0.3.0-0` segment is not enough either: under plain semver it excludes prereleases like `0.2.1-rc.2`, which surfaces as `ERESOLVE` at install time |
-| 2 | `DeepSeek Harness` is rewritten to `DeepSeek-Harness` in the chat request body | the upstream service validates the client name, and the host's default name (with a space) is treated as an unknown client |
-
-No host downgrade and no `compatibility.json` exemption needed — the range covers 0.2.1 by itself. The `<0.3.0-0` upper bound is deliberate: 0.3 may change the plugin API, and this package will not pretend otherwise.
-
-## Quick start
-
-1. Node 22+, with DSH installed.
-2. Install the plugin and start:
+## Install
 
 ```sh
 dsh plugin --profile web add @bushizhanghan/dsh-workmate
 dsh web
 ```
 
-3. Open **Settings → Plugins → DSH WorkBuddy**, click **Connect**, and sign in on the WorkBuddy page that opens.
-4. Pick a **WorkBuddy** model in the model selector — with the default **free models only** scope, the list is exactly what that region's catalog prices `x0.00` right now.
+Then open **Settings → Plugins → DSH Workmate**, click **Connect**, and sign in
+on the WorkBuddy page that opens.
 
-You can also sign in from a terminal:
+Signing in from a terminal works too:
 
 ```sh
 dsh plugin --profile web exec dsh-workmate login
 ```
 
-**Restart `dsh web`** after installing, updating, or signing in. Refreshing the browser is not enough — Node modules stay in memory.
+**Restart `dsh web`** after installing, upgrading, or signing in. Reloading the
+browser is not enough — the host keeps the plugin's modules in memory.
 
-The default model can be set in `~/.dsh/settings.yaml`:
+## Choosing a model
+
+With the default **free models only** scope, the picker lists exactly the models
+that region's live catalog currently prices at `x0.00`. Switch the scope to
+**all models** on the settings card to see the paid ones — those burn credits.
+
+A default model can be pinned in `~/.dsh/settings.yaml`:
 
 ```yaml
 agent-default-model:
@@ -76,55 +62,62 @@ agent-default-model:
   reasoningEffort: high
 ```
 
-Use an id the region actually lists: the model list is whatever that region's live catalog returns, so a pinned default can become stale. `hy3` is free in both regions at the time of writing.
+Use an id the region actually lists. The model list is whatever the live catalog
+returns, so a hard-coded default can go stale; `hy3` is free in both regions at
+the time of writing.
 
 ## How sign-in works
 
-Each region uses the official CLI auth endpoints independently:
+Each region talks to its own auth endpoints, independently:
 
-1. `POST /v2/plugin/auth/state?platform=CLI&nonce=` (international `www.workbuddy.ai`, domestic `copilot.tencent.com`)
-2. Open the returned `authUrl`
-3. Poll `GET /v2/plugin/auth/token?state=` (upstream returns `11217` while still pending)
-4. The token is written to the region's plugin copy: international `$DSH_HOME/.workbuddy-ai-auth.json`, domestic `$DSH_HOME/.workbuddy-cn-auth.json`
+1. `POST /v2/plugin/auth/state?platform=CLI&nonce=`
+2. Open the returned `authUrl` in a browser
+3. Poll `GET /v2/plugin/auth/token?state=` — pending requests answer `11217`
+4. Store the token in that region's plugin copy:
+   `$DSH_HOME/.workbuddy-ai-auth.json` (international) or
+   `$DSH_HOME/.workbuddy-cn-auth.json` (domestic)
 
-The desktop app's `workbuddy-desktop-ai.info` (international) and `workbuddy-desktop.info` (domestic) are read-only — the plugin never writes them. It only stores its own per-region credential copies obtained through OAuth.
+The desktop app's `workbuddy-desktop-ai.info` (international) and
+`workbuddy-desktop.info` (domestic) are opened read-only. The plugin only ever
+writes its own copies, obtained through OAuth.
 
-The settings card lists every imported account. Switching only affects subsequent requests; in-flight requests keep using the original account, and bulk credit/check-in operations do not change the current selection.
+**Disconnect** and `logout` delete that region's plugin credentials only. The
+desktop app is left alone.
 
-**Disconnect** / `logout` only deletes that region's own plugin credentials; the desktop app is untouched.
+## Settings
 
-## Configuration
+Settings → Plugins → **DSH Workmate** exposes:
 
-Settings → Plugins → **DSH WorkBuddy**:
+- **Connect / Disconnect** per region
+- The account list for each region, with explicit switching, remaining credits,
+  a per-account note, and a connectivity test
+- Domestic account selection and the automatic check-in toggle (off by default)
+- Refresh intervals — the active account every 15 minutes and the others every
+  60 minutes by default
+- Model scope: **free models only** (default) or **all models**
 
-- **Connect / Disconnect**: per-region browser sign-in, or delete that region's plugin credentials
-- Domestic/international account lists, explicit switching, remaining credits, and a connectivity test
-- Tick domestic accounts, auto check-in (off by default)
-- The active account refreshes read-only every 15 minutes and others every 60 minutes by default — configurable
-- **Free models only** (default) / **All models**
-
-Or configure it in the profile's `cordis.patch.yml`:
+The same settings can be written into the profile's `cordis.patch.yml`:
 
 ```yaml
 - id: llm-workbuddy
   config:
-    modelScope: free          # international: or all
-    cnModelScope: free        # domestic: or all
-    probeConsent: false       # real model probing off by default
-    autoCheckin: false        # domestic auto check-in off by default
+    modelScope: free          # international: free | all
+    cnModelScope: free        # domestic: free | all
+    probeConsent: false       # real model probing, off by default
+    autoCheckin: false        # domestic auto check-in, off by default
     refreshActiveMinutes: 15
     refreshInactiveMinutes: 60
-    # Hosts used to reach DSH Web over the LAN (do not add these to LOOPBACK)
+    # Hosts used to reach DSH Web over the LAN (never add these to the loopback list)
     # allowedHosts: ["192.168.1.10"]
-    # authFile / cnAuthFile: rarely needed; only for a non-default desktop credential path
+    # authFile / cnAuthFile: only for a non-default desktop credential path
 ```
 
 Environment variables:
 
 | Variable | Effect |
 |---|---|
-| `DSH_WORKBUDDY_AUTH_FILE` | Override the international desktop credential path (OAuth credentials still go to the plugin's own file) |
-| `DSH_WORKBUDDY_CN_AUTH_FILE` | Override the domestic desktop credential path |
+| `DSH_WORKBUDDY_AUTH_FILE` | Overrides the international desktop credential path. OAuth credentials still go to the plugin's own file. |
+| `DSH_WORKBUDDY_CN_AUTH_FILE` | Overrides the domestic desktop credential path. |
 
 ## CLI
 
@@ -135,26 +128,54 @@ dsh plugin --profile web exec dsh-workmate doctor
 dsh plugin --profile web exec dsh-workmate logout
 ```
 
-`status` / `doctor` accept `--json`. `logout` only deletes `$DSH_HOME/.workbuddy-ai-auth.json`.
+`status` and `doctor` accept `--json`. `logout` removes only
+`$DSH_HOME/.workbuddy-ai-auth.json`.
+
+## Compatibility
+
+The seven `@deepseek-ai/dsh-*` peer dependencies are declared as
+`>=0.2.0-rc.2 <0.2.1 || >=0.2.1-0 <0.3.0-0` rather than pinned to a single
+release. DSH validates every `@deepseek-ai/dsh*` peer against the running host
+before it loads a plugin, so an exact pin rejects the plugin wholesale on any
+other host build. The second segment is what makes `0.2.1-rc.2` resolve —
+prerelease tags do not fall inside a plain `>=0.2.0-rc.2 <0.3.0-0` range.
+
+The `<0.3.0-0` upper bound is deliberate: a 0.3 host may change the plugin API,
+and this package will not claim otherwise.
 
 ## Troubleshooting
 
 | Symptom | Fix |
 |---|---|
-| No card in settings / no WorkBuddy in the model list | Restart `dsh web`; refreshing the browser is not enough |
-| `dsh web` exits after clicking Connect | On headless Linux without `xdg-open`, update to a build with spawn `error` handling; use the sign-in link on the card |
-| 403 `request-not-trusted` when opening the card over a LAN IP | Add that IP/hostname to `allowedHosts`; do not put it in the loopback list |
-| Signed in but no models | The region's catalog request failed or returned nothing — check connectivity and whether the token is still valid; the list stays empty rather than borrowing the other region's models |
-| `doctor` says signed-out | Run `login` first, or confirm the international desktop app is signed in |
-| Want paid models | Switch the scope to "All models" on the settings card — credits will be burned |
+| No card in settings, no WorkBuddy models | Restart `dsh web`. Reloading the browser does not reload the host. |
+| `dsh web` exits right after clicking Connect | On headless Linux without `xdg-open`, upgrade to a build that handles spawn `error`; use the sign-in link shown on the card. |
+| 403 `request-not-trusted` when opening the card over a LAN address | Add that address to `allowedHosts`. Do not add it to the loopback list. |
+| Signed in but the model list is empty | The region's catalog request failed or returned nothing. Check connectivity and whether the token is still valid — the list stays empty rather than borrowing the other region's models. |
+| `doctor` reports signed-out | Run `login` first, or check that the international desktop app is signed in. |
+| Paid models are missing | Set the scope to "all models" on the settings card. Credits will be spent. |
 
-```sh
-dsh plugin --profile web exec dsh-workmate doctor
-```
+## Relationship to upstream
+
+This package started as a compatibility fork of
+[`Faide-cyber/dsh-workbuddy`](https://github.com/Faide-cyber/dsh-workbuddy)
+(v1.0.12, commit `9951d25`) and is maintained by
+[@bushizhanghan](https://github.com/bushizhanghan). Upstream is still the main
+line for the same feature; the fork exists because the published package would
+not load on DSH 0.2.1, and because the host's default client name was rejected
+by the upstream service.
+
+Since then the codebase has been reorganised — module layout, naming, comments,
+and the build/CI wiring — while behaviour stays the same. The original MIT
+license and copyright notice are kept unchanged in `LICENSE` and `NOTICE`; the
+diff against upstream 1.0.12 is in `patches/`.
+
+If upstream ships equivalent fixes, prefer the official package over this one.
 
 ## Disclaimer
 
-For personal learning and research only, driving your own WorkBuddy account on your own machine. Follow the WorkBuddy terms of service. This project is not affiliated with Tencent, WorkBuddy, or DeepSeek.
+For personal learning and research, driving your own WorkBuddy account on your
+own machine. Follow the WorkBuddy terms of service. This project is not
+affiliated with Tencent, WorkBuddy, or DeepSeek.
 
 ## License
 

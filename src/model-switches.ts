@@ -1,15 +1,16 @@
 /**
  * The single write path behind both model-switch control actions.
  *
- * Toggling a model in the card has to do three things, and the third is the one
- * that is easy to leave out: the browser's shared model catalog caches a loaded
- * generation and re-reads it only on `llm/adapters-updated`,
- * `settings/document-updated`, or a credentials event. This path persists to the
- * plugin's *own* settings file rather than through the DSH settings service, so
- * none of those events fire by themselves — without the notification the picker
- * keeps offering a model the user just switched off, until some unrelated
- * refresh happens to reload the catalog. It lives in its own module so the
- * ordering is testable: `src/index.ts` pulls DSH packages that no test can load.
+ * A switch has to update three things: live memory, the plugin's own settings
+ * file, and the browser's cached catalog. The last one is easy to miss — the
+ * picker re-reads its catalog only on `llm/adapters-updated`,
+ * `settings/document-updated`, or a credentials event, and writing to the
+ * plugin's own file fires none of them. Without an explicit notification the
+ * picker keeps offering a model the user just switched off, until some
+ * unrelated refresh happens to reload the catalog.
+ *
+ * The ordering lives in its own module so a test can assert it:
+ * `src/index.ts` pulls DSH packages that no test can load.
  *
  * @module dsh-workmate/model-switches
  */

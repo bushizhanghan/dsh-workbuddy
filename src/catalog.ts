@@ -1,25 +1,23 @@
 /**
- * The plugin's model catalog: what the DSH model picker is offered, and under
- * which billing policy.
+ * The model catalog the plugin feeds to the DSH picker, plus the billing policy
+ * that filters it.
  *
- * Two inputs meet here, in a strict order of authority:
+ * Two inputs meet here, in a fixed order of authority:
  *
- * 1. **The region's upstream catalog** — which models exist, their capacities,
+ * 1. The region's live upstream catalog — which models exist, their capacities,
  *    image support, declared reasoning efforts, and their `credits` price.
- * 2. **The billing policy** ({@link WorkBuddyCatalogOptions.scope}) — which of
- *    those the picker is allowed to show.
+ * 2. The billing policy ({@link WorkBuddyCatalogOptions.scope}) — which of those
+ *    the picker is allowed to show.
  *
- * The upstream catalog is the *only* authority on price: whatever the region
- * currently quotes in `credits` is what the picker shows, so a price change or
- * a new model reaches users without a plugin release. Earlier versions kept a
- * local price table and let it override the catalog; that table is gone, and
- * with it the risk of quoting yesterday's prices.
+ * Price comes from the upstream catalog and nowhere else, so a price change or
+ * a newly added model reaches users without a plugin release.
  *
  * @module dsh-workmate/catalog
  */
 
 import type { WorkBuddyUpstreamModel } from './upstream.ts'
 import { normalizeCredits } from './upstream.ts'
+import { joinDisplayParts } from './display.ts'
 
 /** One model entry the adapter exposes. */
 export type WorkBuddyModelInfo = WorkBuddyUpstreamModel
@@ -157,17 +155,16 @@ export class WorkBuddyCatalog {
 
   /** Whether a model is free according to this region's authority. */
   isFree(id: string): boolean {
-    return this.freeIds().includes(id)
+    return this.all().some(model => model.id === id && model.billing?.free === true)
   }
 
   /** Display suffix for one row: the rate, then any promotional badges. */
   displaySuffix(id: string): string | undefined {
     const model = this.current().find(entry => entry.id === id)
     if (model === undefined) return undefined
-    const parts = [
+    return joinDisplayParts([
       normalizeCredits(model.billing?.credits),
       ...(model.billing?.badges ?? []),
-    ].filter((part): part is string => part !== undefined && part !== '')
-    return parts.length === 0 ? undefined : parts.join(' · ')
+    ])
   }
 }

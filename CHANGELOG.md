@@ -2,6 +2,26 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.3] - 2026-10-23
+
+### 变更
+
+- **README 重写**（中英双版）：去掉全部截图与徽章图片，改为纯文本说明；按「安装 → 选模型 → 登录流程 → 设置 → 命令行 → 兼容性 → 故障排查」重排。`docs/` 下的三张截图随之删除，npm 包不再包含 `docs/`。
+- **模型行显示后缀去重**：`src/display.ts` 新增 `joinDisplayParts()` 与 `DISPLAY_PART_SEPARATOR`，宿主侧（`adapter.ts`）与卡片侧（`catalog.ts`）原本各写一遍的「计费 + 促销标记」拼接逻辑改为共用一处。顺带修掉 `adapter.ts` 里定义了却没被使用的 `RATE_SEPARATOR`（第 93 行仍在用字面量）。
+- `src/display.ts`：两处重复的 `pad` 闭包提为模块级 `pad2()`，时间换算常量（`MS_PER_DAY`、`BEIJING_UTC_OFFSET_MS` 等）具名化。
+- `src/loopback.ts`：`originIsTrusted` 里对 `hostname` 的重复小写化与 `::1` 特判收敛为一次比较；`allowedHosts` 为空时直接返回，省掉一次 `new URL` 解析。
+- `src/provider-rows.ts`：`setLive` 里的「注册两半并回滚」逻辑抽成内部 `register()`，`setLive` 只剩状态判断。
+- `src/catalog.ts`：`isFree()` 直接在 `all()` 上短路，不再先构造一次 id 数组。
+
+### 修复
+
+- **CI 的构建产物 smoke test 一直在断言旧模块 id**：`.github/workflows/ci.yml` 里写死 `grep 'id: "dsh-workbuddy"'`，而 1.2.0 已把模块 id 改成包名，这项检查必然失败。现在改为从 `package.json` 的 `name` 读取，包名再改也不会漂移。
+- **`pnpm-workspace.yaml` 缺 `packages` 字段**：pnpm 9/10 会直接报 `packages field missing or empty`，`pnpm install` 无法进行；补上 `packages: ['.']`。
+
+### 说明
+
+- 功能行为未改动：`pnpm run check`（typecheck + 111 项测试 + 构建）全绿。
+
 ## [1.2.2] - 2026-10-22
 
 ### 说明

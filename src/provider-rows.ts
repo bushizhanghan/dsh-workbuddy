@@ -1,13 +1,11 @@
 /**
  * The provider rows this plugin contributes to the Models settings page, kept in
- * step with what the user has actually signed in.
+ * step with who is actually signed in.
  *
  * The DSH model registry has no "hidden" state: a route is either registered —
- * and therefore listed — or absent. So "do not offer WorkBuddy before signing
- * in" can only mean "do not register it", and the row has to be added on sign-in
- * and withdrawn again on sign-out. Both halves of the row move together: an
- * adapter with no directory entry, or a directory entry with no adapter, renders
- * as a provider that cannot be used.
+ * and therefore listed — or absent. So "do not offer WorkBuddy before sign-in"
+ * can only mean "do not register it", which in turn means the row has to be
+ * added on sign-in and withdrawn on sign-out.
  *
  * @module dsh-workmate/provider-rows
  */
@@ -65,6 +63,25 @@ export function createProviderRows(
     for (const undo of [...releases].reverse()) undo()
   }
 
+  /** Register both halves of one row, rolling the first back if the second fails. */
+  const register = (region: string, spec: ProviderRowSpec): void => {
+    const releases: Array<() => void> = []
+    held.set(region, releases)
+    try {
+      releases.push(registrar.registerAdapter([spec.provider], spec.adapter))
+      releases.push(registrar.registerConfigurableProviders([{
+        provider: spec.provider,
+        displayName: spec.displayName,
+        settingsNs: spec.settingsNs,
+        settingsPath: [],
+        declared: false,
+      }]))
+    } catch (error: unknown) {
+      release(region)
+      throw error
+    }
+  }
+
   return {
     setLive(region, live) {
       const spec = specs.get(region)
@@ -74,21 +91,7 @@ export function createProviderRows(
         return
       }
       if (held.has(region)) return
-      const releases: Array<() => void> = []
-      held.set(region, releases)
-      try {
-        releases.push(registrar.registerAdapter([spec.provider], spec.adapter))
-        releases.push(registrar.registerConfigurableProviders([{
-          provider: spec.provider,
-          displayName: spec.displayName,
-          settingsNs: spec.settingsNs,
-          settingsPath: [],
-          declared: false,
-        }]))
-      } catch (error: unknown) {
-        release(region)
-        throw error
-      }
+      register(region, spec)
     },
     releaseAll() {
       for (const region of [...held.keys()]) release(region)

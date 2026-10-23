@@ -25,6 +25,7 @@ import type { WorkBuddyProbeRecord } from './probe-store.ts'
 import type { WorkBuddyShim } from './shim.ts'
 import { normalizeCredits } from './upstream.ts'
 import type { WorkBuddyEffort } from './upstream.ts'
+import { DISPLAY_PART_SEPARATOR, joinDisplayParts } from './display.ts'
 
 /**
  * Provider route this bundle owns.
@@ -63,21 +64,17 @@ const MAX_REQUEST_IMAGE_BYTES = 20_971_520
 const NO_COST = { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 } as const
 
 /**
- * Separator between a model's name and its billing rate.
- *
- * A middle dot rather than a hyphen or colon: model names already contain
- * hyphens (`Deepseek-V4.1-Flash`), so a hyphen separator would be ambiguous
- * about where the name ends and the rate begins.
+ * Separator between a model's name and its billing rate; shared with the card
+ * so both halves compose the same string.
  */
-const RATE_SEPARATOR = ' · '
+const RATE_SEPARATOR = DISPLAY_PART_SEPARATOR
 
 /** The catalog display suffix: the billing rate, then any promo badges. */
 function displaySuffix(info: WorkBuddyModelInfo): string | undefined {
-  const parts = [
+  return joinDisplayParts([
     normalizeCredits(info.billing?.credits),
     ...(info.billing?.badges ?? []),
-  ].filter((part): part is string => part !== undefined && part !== '')
-  return parts.length === 0 ? undefined : parts.join(' · ')
+  ])
 }
 
 /**

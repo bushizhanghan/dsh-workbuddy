@@ -73,13 +73,13 @@ export function hostIsTrusted(host: string | undefined, allowedHosts: readonly s
  */
 export function originIsTrusted(origin: string | undefined, allowedHosts: readonly string[] = []): boolean {
   if (originIsLoopback(origin)) return true
+  if (allowedHosts.length === 0) return false
   try {
+    // `URL` normalizes the hostname already, brackets included for IPv6, which
+    // is exactly the spelling {@link normalizeAllowedHost} produces.
     const { hostname } = new URL(origin ?? '')
-    const name = hostname === '::1' ? '[::1]' : hostname.toLowerCase()
-    return allowedHosts.some(entry => {
-      const allowed = normalizeAllowedHost(entry)
-      return allowed === name || allowed === hostname.toLowerCase()
-    })
+    const host = hostname.toLowerCase()
+    return allowedHosts.some(entry => normalizeAllowedHost(entry) === host)
   } catch {
     return false
   }

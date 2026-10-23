@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.2.3] - 2026-10-23
+
+### Changed
+
+- **README rewritten** in both languages: no screenshots and no badge images, plain text only, restructured as install → picking a model → sign-in flow → settings → CLI → compatibility → troubleshooting. The three screenshots under `docs/` are gone, and the npm package no longer ships a `docs/` directory.
+- **De-duplicated the model display suffix**: `src/display.ts` now owns `joinDisplayParts()` and `DISPLAY_PART_SEPARATOR`, so the host adapter and the card share one implementation of "rate + promo badges" instead of two. This also fixes the unused `RATE_SEPARATOR` in `adapter.ts`, which was still bypassed by a string literal.
+- `src/display.ts`: the two duplicated `pad` closures became one module-level `pad2()`, and the time constants (`MS_PER_DAY`, `BEIJING_UTC_OFFSET_MS`, …) are named.
+- `src/loopback.ts`: `originIsTrusted` no longer lowercases the hostname twice or special-cases `::1`; an empty `allowedHosts` returns before parsing a URL.
+- `src/provider-rows.ts`: the "register both halves, roll back on failure" block moved into an internal `register()`, leaving `setLive` as pure state handling.
+- `src/catalog.ts`: `isFree()` short-circuits over `all()` instead of materialising an id array first.
+
+### Fixed
+
+- **The CI build smoke test asserted a stale module id**: `.github/workflows/ci.yml` grepped for `id: "dsh-workbuddy"`, but 1.2.0 renamed the module id to the package name, so the check could only fail. It now reads `name` from `package.json`, so a future rename cannot leave it behind.
+- **`pnpm-workspace.yaml` had no `packages` field**: pnpm 9/10 refuses with `packages field missing or empty`, blocking `pnpm install`. Added `packages: ['.']`.
+
+### Note
+
+- Behaviour is unchanged: `pnpm run check` (typecheck + 111 tests + build) passes.
+
 ## [1.2.2] - 2026-10-22
 
 ### Note
