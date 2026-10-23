@@ -54,7 +54,8 @@
     "CHANGELOG.md",
     "CHANGELOG.en.md",
     "LICENSE",
-    "NOTICE"
+    "NOTICE",
+    "LICENSE-THIRD-PARTY"
   ],
   "license": "MIT",
   "repository": {

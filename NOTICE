@@ -1,25 +1,35 @@
-DSH WorkBuddy — compatibility fork
-==================================
+DSH WorkBuddy Harness — notes on provenance
+===========================================
 
-This repository is a fork of `dsh-workbuddy`
-(https://github.com/Faide-cyber/dsh-workbuddy), revision 9951d25 (v1.0.12).
+Fork origin
+-----------
+This repository started as a fork of `dsh-workbuddy`
+(https://github.com/Faide-cyber/dsh-workbuddy), revision 9951d25 (v1.0.12),
+released under the MIT License (Copyright (c) 2026 Faide-cyber).
 
-Upstream copyright: Copyright (c) 2026 Faide-cyber, released under the MIT License.
-The full upstream license text is kept unchanged in LICENSE and applies to the
-whole work, including the modifications below.
+Modifications in this repository (Copyright (c) 2026 bushizhanghan) are
+MIT-licensed on the same terms. `LICENSE` carries both copyright lines, and the
+reproducible diffs against upstream 1.0.12 live in `patches/`.
 
-Modifications in this fork (Copyright (c) 2026 busizhanghan), MIT-licensed on the
-same terms:
+Changes relative to upstream 1.0.12:
 
 1. Widened the `@deepseek-ai/dsh-*` peer dependency ranges from the exact pin
-   `0.2.0-rc.2` to `>=0.2.0-rc.2 <0.3.0-0`, so DeepSeek Harness 0.2.1-rc.2 no
-   longer rejects the plugin at load time.
+   `0.2.0-rc.2` to `>=0.2.0-rc.2 <0.2.1 || >=0.2.1-0 <0.3.0-0`, so DeepSeek
+   Harness 0.2.1 no longer rejects the plugin at load time.
 2. Rewrote the client-name string `DeepSeek Harness` to `DeepSeek-Harness` in the
    outgoing chat request body, which the upstream service accepts as a known
    client name.
-3. Renamed the published package to `@bushizhanghan/dsh-workmate`, including the
-   client module id, the `cordis.patch.yml` insert name, the CLI command name and
-   the documentation. The model provider id (`workbuddy-ai`) is unchanged.
+3. Renamed the package to `@bushizhanghan/dsh-workmate` and the repository to
+   `bushizhanghan/dsh-workbuddy-harness`, including the client module id, the
+   `cordis.patch.yml` insert name, the CLI command name and the documentation.
+   The model provider id (`workbuddy-ai`) is unchanged.
+4. Reorganised modules, naming, comments, build and CI wiring without changing
+   behaviour; the README was rewritten without screenshots.
 
-Nothing else is changed relative to upstream 1.0.12. Reproducible diffs live in
-`patches/`. If upstream ships an equivalent fix, prefer the official package.
+Third-party portions
+--------------------
+The host architecture (loopback shim, credential store, pi-ai adapter, probe
+protocol) is adapted from `dsh-workbuddy-connect` (MIT, Copyright (c) 2026
+Corrine Hu). The full text of that license is kept in `LICENSE-THIRD-PARTY`.
+
+If upstream ships an equivalent fix, prefer the official package.
