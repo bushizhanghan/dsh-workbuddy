@@ -443,4 +443,32 @@ describe('transport failures', () => {
     expect(calls).toBe(1)
     expect(result.ok).toBe(false)
   })
+
+  it('retries once when the edge answers 550 with an empty body', async () => {
+    let calls = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      calls += 1
+      // 550 carries no body, so nothing was generated upstream and a replay is safe.
+      if (calls === 1) return new Response('', { status: 550 })
+      return new Response('data: [DONE]\n\n', { status: 200, headers: { 'content-type': 'text/event-stream' } })
+    })
+
+    const result = await chat(new WorkBuddyUpstreamClient())
+    expect(calls).toBe(2)
+    expect(result.ok).toBe(true)
+  })
+
+  it('stops after one 550 retry and reports the status', async () => {
+    let calls = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      calls += 1
+      return new Response('', { status: 550 })
+    })
+
+    const result = await chat(new WorkBuddyUpstreamClient())
+    expect(calls).toBe(2)
+    expect(result.ok).toBe(false)
+    if (result.ok) return
+    expect(result.status).toBe(550)
+  })
 })

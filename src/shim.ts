@@ -18,12 +18,36 @@
  */
 
 import { randomBytes, timingSafeEqual } from 'node:crypto'
+import { appendFileSync, mkdirSync } from 'node:fs'
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http'
+import { dirname, join } from 'node:path'
 import { Readable } from 'node:stream'
+import { resolveDshHome } from '@deepseek-ai/dsh-home-paths'
 import type { WorkBuddyCredentialStoreLike } from './auth.ts'
 import type { WorkBuddyCatalog } from './catalog.ts'
 import { hostIsLoopback, originIsLoopback } from './loopback.ts'
 import { prepareChatBody, isModelNotAllowed, WorkBuddyUpstreamClient, type UpstreamErrorKind } from './upstream.ts'
+
+/** Basename of the failure log the plugin appends to inside the Harness home. */
+export const WORKBUDDY_DIAGNOSTICS_FILENAME = '.workbuddy-ai-diagnostics.log'
+
+/**
+ * Append one JSON line describing a failed upstream call.
+ *
+ * A 502 that only says `http 0` is unactionable, and the host keeps no log of
+ * its own. Recording the status, the model and the request size turns a
+ * user-visible dead end into something that can be diagnosed after the fact.
+ * Never throws: diagnostics must not be able to fail a request.
+ */
+export function recordUpstreamFailure(entry: Record<string, unknown>): void {
+  try {
+    const path = join(resolveDshHome(), WORKBUDDY_DIAGNOSTICS_FILENAME)
+    mkdirSync(dirname(path), { recursive: true })
+    appendFileSync(path, `${JSON.stringify({ at: new Date().toISOString(), ...entry })}\n`, 'utf8')
+  } catch {
+    // Swallowed on purpose.
+  }
+}
 
 /** Minimal logger surface the plugin context already provides. */
 export interface ShimLogger {
@@ -245,6 +269,14 @@ export function createWorkBuddyShim(options: WorkBuddyShimOptions): WorkBuddyShi
           options.onModelUnavailable?.(model)
         }
       }
+      recordUpstreamFailure({
+        event: 'chat-failed',
+        status: result.status,
+        kind: result.kind,
+        model: modelOf(prepared) ?? null,
+        requestBytes: Buffer.byteLength(prepared, 'utf8'),
+        message: result.message.slice(0, 400),
+      })
       writeOpenAIError(
         res,
         KIND_STATUS[result.kind],

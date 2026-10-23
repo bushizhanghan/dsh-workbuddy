@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.2.6] - 2026-10-23
+
+### Fixed
+
+- **A `550` with an empty body failed outright**: the edge gateway occasionally refuses a request with 550 (a non-standard code) and no body at all. 1.2.5 passed that straight through, so the user saw `upstream server (http 550): ` and nothing else. 550 is now retried once after 400 ms — that status means nothing was generated upstream, so replaying the request is safe.
+
+### Added
+
+- **Failure diagnostics** at `$DSH_HOME/.workbuddy-ai-diagnostics.log`: every failed chat request appends one JSON line with the timestamp, model, request size in bytes, upstream status, error class and message (truncated to 400 chars). The host keeps no log of its own for these failures, so diagnosis used to depend on the user quoting the error text back; now the file says what happened. Write errors are swallowed and can never fail the request.
+
+### Note
+
+- Tests 114 → 116 (550 retry succeeds; 550 after retry reports the status).
+
 ## [1.2.5] - 2026-10-23
 
 ### Fixed

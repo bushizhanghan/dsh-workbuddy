@@ -637,29 +637,40 @@ export class WorkBuddyUpstreamClient {
     bodyJson: string,
     signal?: AbortSignal,
   ): Promise<WorkBuddyChatResult> {
-    let response: Response
-    try {
-      // [fork] 宿主默认把自身称作 "DeepSeek Harness"（带空格），上游按客户端名
-      // 校验时会被判成未知客户端而拒绝。请求体里出现的同名字符串统一改写成
-      // 上游认识的 "DeepSeek-Harness" 形式；其余内容原样透传。
-      const outboundBody = bodyJson.split('DeepSeek Harness').join('DeepSeek-Harness')
-      response = await fetchUpstream(`${chatBase(credential)}/v2/chat/completions`, {
-        method: 'POST',
-        headers: { ...chatHeaders(credential), 'Authorization': `Bearer ${credential.accessToken}` },
-        body: outboundBody,
-        ...signal === undefined ? {} : { signal },
-      })
-    } catch (error: unknown) {
-      return { ok: false, status: 0, kind: 'server', message: `transport error: ${describeFetchError(error)}` }
+    // [fork] 宿主默认把自身称作 "DeepSeek Harness"（带空格），上游按客户端名
+    // 校验时会被判成未知客户端而拒绝。请求体里出现的同名字符串统一改写成
+    // 上游认识的 "DeepSeek-Harness" 形式；其余内容原样透传。
+    const outboundBody = bodyJson.split('DeepSeek Harness').join('DeepSeek-Harness')
+
+    const attempt = async (): Promise<WorkBuddyChatResult> => {
+      let response: Response
+      try {
+        response = await fetchUpstream(`${chatBase(credential)}/v2/chat/completions`, {
+          method: 'POST',
+          headers: { ...chatHeaders(credential), 'Authorization': `Bearer ${credential.accessToken}` },
+          body: outboundBody,
+          ...signal === undefined ? {} : { signal },
+        })
+      } catch (error: unknown) {
+        return { ok: false, status: 0, kind: 'server', message: `transport error: ${describeFetchError(error)}` }
+      }
+      if (response.ok) return { ok: true, response }
+      const text = (await response.text()).slice(0, ERROR_BODY_LIMIT)
+      return {
+        ok: false,
+        status: response.status,
+        kind: classifyUpstreamError(response.status, text),
+        message: text,
+      }
     }
-    if (response.ok) return { ok: true, response }
-    const text = (await response.text()).slice(0, ERROR_BODY_LIMIT)
-    return {
-      ok: false,
-      status: response.status,
-      kind: classifyUpstreamError(response.status, text),
-      message: text,
-    }
+
+    const first = await attempt()
+    // 550 is the edge gateway refusing a request without a body. Nothing was
+    // generated upstream, so replaying the request is safe — and the second
+    // attempt usually lands on a healthy node.
+    if (first.ok || first.status !== 550) return first
+    await new Promise(resolve => setTimeout(resolve, 400))
+    return attempt()
   }
 
   /** POST the token-refresh endpoint; the caller merges the outcome. */
